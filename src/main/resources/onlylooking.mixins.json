@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "baguchan.onlylooking.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "onlylooking.refmap.json",
+  "mixins": [
+    "NearestAttackableTargetGoalMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
