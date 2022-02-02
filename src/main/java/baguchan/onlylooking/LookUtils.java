@@ -15,10 +15,10 @@ public class LookUtils {
 		double d1 = vec3.dot(vec31);
 		/*
 		 * range 1.0 is only Look at the hostile body beyond the mob's line of sight.
-		 * If range is 8.0, move the eyes of the mob to see the mob in the visible range.
+		 * If range is 7.0, move the eyes of the mob to see the mob in the visible range.
 		 *
 		 */
-		double range = 8.0D;
+		double range = 7.0D;
 
 		return d1 > 1.0D - range / d0 ? LookUtils.hasLineOfSight(entity, target) : false;
 
