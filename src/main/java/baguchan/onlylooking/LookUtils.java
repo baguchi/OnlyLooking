@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
  */
 public class LookUtils {
 	public static boolean isLookingAtYou(LivingEntity entity, LivingEntity target) {
-		return isLookingAtYouTest(entity, target) && hasLineOfSight(entity, target);
+		return isLookingAtYouTest(entity, target);
 	}
 
 	public static boolean isLookingAtYouTest(LivingEntity entity, LivingEntity target) {
