@@ -18,7 +18,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Inject(at = @At("HEAD"), method = "hasLineOfSight", cancellable = true)
-	void isLookingAtMe(Entity p_32535_, CallbackInfoReturnable<Boolean> callbackInfo) {
+	public void isLookingAtMe(Entity p_32535_, CallbackInfoReturnable<Boolean> callbackInfo) {
 		LivingEntity livingEntity = (LivingEntity) ((Object) this);
 		if (p_32535_.level == this.level && p_32535_ instanceof LivingEntity && !LookUtils.isLookingAtYou(livingEntity, (LivingEntity) p_32535_)) {
 			callbackInfo.setReturnValue(false);

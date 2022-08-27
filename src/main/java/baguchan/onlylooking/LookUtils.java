@@ -1,10 +1,7 @@
 package baguchan.onlylooking;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 
@@ -46,16 +43,5 @@ public class LookUtils {
 
 		double sensitive = 6;
 		return f2 > sensitive;
-	}
-
-	public static boolean hasLineOfSight(LivingEntity entity, Entity target) {
-		if (target.level != entity.level) {
-			return false;
-		} else {
-			Vec3 vec3 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
-			Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
-
-			return entity.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.MISS;
-		}
 	}
 }
