@@ -42,7 +42,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void onConstructor(EntityType<? extends PathfinderMob> p_19870_, Level p_19871_, CallbackInfo info) {
-		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationNoParticleListener(new EntityPositionSource(this, this.getEyeHeight()), 10, this, (VibrationListener.ReceivingEvent) null, 0.0F, 0));
+		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationNoParticleListener(new EntityPositionSource(this, this.getEyeHeight()), 16, this, null, 0.0F, 0));
 	}
 
 
@@ -68,7 +68,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 	}
 
 	public boolean shouldListen(ServerLevel p_219370_, GameEventListener p_219371_, BlockPos p_219372_, GameEvent p_219373_, GameEvent.Context p_219374_) {
-		if (LookUtils.isVibrationAvaiable(this) && this.soundCooldown <= 0 && !this.isNoAi() && !this.isDeadOrDying() && p_219370_.getWorldBorder().isWithinBounds(p_219372_) && !this.isRemoved() && this.level == p_219370_ && (this instanceof Enemy || p_219373_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) && this.getTarget() == null) {
+		if (LookUtils.isVibrationAvaiable(this) && this.soundCooldown <= 0 && !this.isNoAi() && !this.isDeadOrDying() && p_219370_.getWorldBorder().isWithinBounds(p_219372_) && !this.isRemoved() && this.level == p_219370_ && (this instanceof Enemy && this.getTarget() == null || p_219373_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this))) {
 			Entity entity = p_219374_.sourceEntity();
 
 			if (p_219373_.is(ModTags.GameEvents.IGNORE_VIBRATION)) {
@@ -93,23 +93,28 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 	}
 
 	@Override
-	public void onSignalReceive(ServerLevel p_223865_, GameEventListener p_223866_, BlockPos p_223867_, GameEvent p_223868_, @Nullable Entity entity, @Nullable Entity projectile, float p_223871_) {
+	public void onSignalReceive(ServerLevel p_223865_, GameEventListener p_223866_, BlockPos p_223867_, GameEvent p_223868_, @Nullable Entity entity, @Nullable Entity entity2, float p_223871_) {
 		if (!this.isDeadOrDying()) {
 			if (p_223868_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) {
 				PathfinderMob pathfinderMob = (PathfinderMob) ((Object) this);
-				Vec3 vec3 = DefaultRandomPos.getPosAway(pathfinderMob, 16, 7, new Vec3(p_223867_.getX(), p_223867_.getY(), p_223867_.getZ()));
-				if (vec3 != null) {
-					this.getNavigation().moveTo(this.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0), 1.2F);
+
+				for (int i = 0; i < 4; i++) {
+					Vec3 vec3 = DefaultRandomPos.getPosAway(pathfinderMob, 16, 7, new Vec3(p_223867_.getX(), p_223867_.getY(), p_223867_.getZ()));
+					if (vec3 != null) {
+						this.getNavigation().moveTo(this.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0), 1.2F);
+					}
 				}
 				this.soundCooldown = 60;
 			} else {
-				if (entity != null && !LookUtils.hasLineOfSightOnlyClip(this, entity)) {
-					this.getNavigation().moveTo(entity.getX(), entity.getY(), entity.getZ(), 0.95F);
+				if (entity2 != null && LookUtils.isLookingAtYou(this, entity2)) {
+					this.getNavigation().moveTo(p_223867_.getX(), p_223867_.getY(), p_223867_.getZ(), 0.95F);
 				}
-				if (projectile != null && !LookUtils.isLookingAtYou(this, projectile)) {
-					this.getNavigation().moveTo(projectile.getX(), projectile.getY(), projectile.getZ(), 0.95F);
+
+				if (entity != null && !LookUtils.isLookingAtYou(this, entity)) {
+					this.getNavigation().moveTo(p_223867_.getX(), p_223867_.getY(), p_223867_.getZ(), 0.95F);
 				}
-				this.soundCooldown = 400;
+
+				this.soundCooldown = 120;
 			}
 
 		}
