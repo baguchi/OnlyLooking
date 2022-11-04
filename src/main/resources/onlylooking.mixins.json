@@ -5,7 +5,8 @@
   "minVersion": "0.8",
   "refmap": "onlylooking.refmap.json",
   "mixins": [
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "PathfinderMobMixin"
   ],
   "injectors": {
     "defaultRequire": 1

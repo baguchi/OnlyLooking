@@ -3,6 +3,7 @@ package baguchan.onlylooking.mixin;
 import baguchan.onlylooking.LookUtils;
 import baguchan.onlylooking.ModTags;
 import baguchan.onlylooking.OnlyLooking;
+import baguchan.onlylooking.VibrationNoParticleListener;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -24,18 +25,26 @@ import net.minecraft.world.level.gameevent.vibrations.VibrationListener;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.BiConsumer;
 
 @Mixin(PathfinderMob.class)
 public abstract class PathfinderMobMixin extends Mob implements VibrationListener.VibrationListenerConfig {
-	private final DynamicGameEventListener<VibrationListener> dynamicGameEventListener;
+	private DynamicGameEventListener<VibrationListener> dynamicGameEventListener;
 	private int soundCooldown;
 
 	public PathfinderMobMixin(EntityType<? extends PathfinderMob> p_19870_, Level p_19871_) {
 		super(p_19870_, p_19871_);
-		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationListener(new EntityPositionSource(this, this.getEyeHeight()), 10, this, (VibrationListener.ReceivingEvent) null, 0.0F, 0));
 	}
+
+	@Inject(method = "<init>", at = @At("TAIL"))
+	public void onConstructor(EntityType<? extends PathfinderMob> p_19870_, Level p_19871_, CallbackInfo info) {
+		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationNoParticleListener(new EntityPositionSource(this, this.getEyeHeight()), 10, this, (VibrationListener.ReceivingEvent) null, 0.0F, 0));
+	}
+
 
 	public void addAdditionalSaveData(CompoundTag p_219434_) {
 		super.addAdditionalSaveData(p_219434_);
@@ -59,7 +68,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 	}
 
 	public boolean shouldListen(ServerLevel p_219370_, GameEventListener p_219371_, BlockPos p_219372_, GameEvent p_219373_, GameEvent.Context p_219374_) {
-		if (LookUtils.isVibrationAvaiable(this) && !this.isNoAi() && !this.isDeadOrDying() && this.soundCooldown <= 0 && p_219370_.getWorldBorder().isWithinBounds(p_219372_) && !this.isRemoved() && this.level == p_219370_ && (this instanceof Enemy || p_219373_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) && this.getTarget() == null) {
+		if (LookUtils.isVibrationAvaiable(this) && !this.isNoAi() && !this.isDeadOrDying() && p_219370_.getWorldBorder().isWithinBounds(p_219372_) && !this.isRemoved() && this.level == p_219370_ && (this instanceof Enemy && this.soundCooldown <= 0 || p_219373_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) && this.getTarget() == null) {
 			Entity entity = p_219374_.sourceEntity();
 
 			if (p_219373_.is(ModTags.GameEvents.IGNORE_VIBRATION)) {
@@ -92,13 +101,13 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 				this.getNavigation().moveTo(this.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0), 1.2F);
 				this.soundCooldown = 60;
 			} else {
-				if (entity != null && !this.hasLineOfSight(entity)) {
+				if (entity != null) {
 					this.getNavigation().moveTo(entity.getX(), entity.getY(), entity.getZ(), 0.95F);
 				}
-				if (projectile != null && !this.hasLineOfSight(projectile)) {
+				if (projectile != null) {
 					this.getNavigation().moveTo(projectile.getX(), projectile.getY(), projectile.getZ(), 0.95F);
 				}
-				this.soundCooldown = 300;
+				this.soundCooldown = 200;
 			}
 
 		}
@@ -113,6 +122,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 	}
 
 	public void tick() {
+		super.tick();
 		Level level = this.level;
 		if (LookUtils.isVibrationAvaiable(this)) {
 			if (level instanceof ServerLevel serverlevel) {
