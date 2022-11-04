@@ -31,13 +31,13 @@ public class ModConfigs {
 					.comment("Add Entity on Mob check Vibration BlackList")
 					.define("VibrationBlackList", Lists.newArrayList("minecraft:phantom", "minecraft:warden"));
 			PRIME_DISLIKE_LIST = builder
-					.comment("Add Entity on Mob check Vibration BlackList")
+					.comment("Add Entity on Prime Dislike List(example. They run for TNT)")
 					.define("PrimeDislikeBlackList", Lists.newArrayList("minecraft:creeper", "minecraft:zombie", "minecraft:skeleton", "minecraft:sheep", "minecraft:cow", "minecraft:mooshroom", "minecraft:rabbit"
 							, "minecraft:cat", "minecraft:ocelot", "minecraft:villager", "minecraft:pillager", "minecraft:evoker", "minecraft:vindicator", "minecraft:illusioner"
 							, "hunterillager:hunterillager", "minecraft:stray", "minecraft:husk", "minecraft:pig", "minecraft:chicken"
 							, "earthmobsmod:wooly_cow", "earthmobsmod:cluck_shroom", "earthmobsmod:horned_sheep", "earthmobsmod:hyper_rabbit", "earthmobsmod:moobloom", "earthmobsmod:moolip", "earthmobsmod:jumbo_rabbit"));
 			VIBRATION_CHECK = builder
-					.comment("Enable Mob check Vibration")
+					.comment("Enable Mob check Vibration(when they find sounds. find sound source.)")
 					.define("Vibration", true);
 		}
 	}
