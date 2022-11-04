@@ -1,5 +1,6 @@
 package baguchan.onlylooking;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
@@ -12,11 +13,19 @@ import net.minecraftforge.registries.ForgeRegistries;
  * https://www.curseforge.com/project/309344/license
  */
 public class LookUtils {
-	public static boolean isLookingAtYou(LivingEntity entity, LivingEntity target) {
+	public static boolean isLookingAtYou(LivingEntity entity, Entity target) {
 		return !ModConfigs.COMMON.NEW_LOOKING_BLACKLIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString()) && isLookingAtYouTest(entity, target);
 	}
 
-	public static boolean isLookingAtYouTest(LivingEntity entity, LivingEntity target) {
+	public static boolean isVibrationAvaiable(LivingEntity entity) {
+		return !ModConfigs.COMMON.DISABLE_VIBRATION_LIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString()) && ModConfigs.COMMON.VIBRATION_CHECK.get();
+	}
+
+	public static boolean isPrimeDislike(LivingEntity entity) {
+		return ModConfigs.COMMON.PRIME_DISLIKE_LIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString());
+	}
+
+	public static boolean isLookingAtYouTest(LivingEntity entity, Entity target) {
 		float nearDistance = 3;
 		float farDistance = entity.getAttribute(Attributes.FOLLOW_RANGE) != null ? (float) entity.getAttributeBaseValue(Attributes.FOLLOW_RANGE) : 16;
 

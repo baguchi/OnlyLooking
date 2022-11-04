@@ -1,0 +1,19 @@
+{
+  "values": [
+    "minecraft:drink",
+    "minecraft:eat",
+    "minecraft:entity_damage",
+    "minecraft:entity_die",
+    "minecraft:entity_interact",
+    "minecraft:equip",
+    "minecraft:explode",
+    "minecraft:hit_ground",
+    "minecraft:instrument_play",
+    "minecraft:lightning_strike",
+    "minecraft:splash",
+    "minecraft:step",
+    "minecraft:swim",
+    "minecraft:teleport",
+    "minecraft:flap"
+  ]
+}

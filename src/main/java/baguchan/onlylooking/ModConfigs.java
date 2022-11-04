@@ -18,11 +18,27 @@ public class ModConfigs {
 
 	public static class Common {
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> NEW_LOOKING_BLACKLIST;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> DISABLE_VIBRATION_LIST;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> PRIME_DISLIKE_LIST;
+		public final ForgeConfigSpec.BooleanValue VIBRATION_CHECK;
+
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			NEW_LOOKING_BLACKLIST = builder
 					.comment("Add Entity on Looking AI Blacklist. Use the full name(This config only disabled mob enchant when mob spawn. not mean delete complete, eg: minecraft:zomibe.")
 					.define("LookingAIMobBlacklist", Lists.newArrayList("minecraft:phantom"));
+			DISABLE_VIBRATION_LIST = builder
+					.comment("Add Entity on Mob check Vibration BlackList")
+					.define("VibrationBlackList", Lists.newArrayList("minecraft:phantom", "minecraft:warden"));
+			PRIME_DISLIKE_LIST = builder
+					.comment("Add Entity on Mob check Vibration BlackList")
+					.define("PrimeDislikeBlackList", Lists.newArrayList("minecraft:creeper", "minecraft:zombie", "minecraft:skeleton", "minecraft:sheep", "minecraft:cow", "minecraft:mooshroom", "minecraft:rabbit"
+							, "minecraft:cat", "minecraft:ocelot", "minecraft:villager", "minecraft:pillager", "minecraft:evoker", "minecraft:vindicator", "minecraft:illusioner"
+							, "hunterillager:hunterillager", "minecraft:stray", "minecraft:husk", "minecraft:pig", "minecraft:chicken"
+							, "earthmobsmod:wooly_cow", "earthmobsmod:cluck_shroom", "earthmobsmod:horned_sheep", "earthmobsmod:hyper_rabbit", "earthmobsmod:moobloom", "earthmobsmod:moolip", "earthmobsmod:jumbo_rabbit"));
+			VIBRATION_CHECK = builder
+					.comment("Enable Mob check Vibration")
+					.define("Vibration", true);
 		}
 	}
 }
