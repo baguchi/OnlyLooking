@@ -68,7 +68,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 	}
 
 	public boolean shouldListen(ServerLevel p_219370_, GameEventListener p_219371_, BlockPos p_219372_, GameEvent p_219373_, GameEvent.Context p_219374_) {
-		if (LookUtils.isVibrationAvaiable(this) && !this.isNoAi() && !this.isDeadOrDying() && p_219370_.getWorldBorder().isWithinBounds(p_219372_) && !this.isRemoved() && this.level == p_219370_ && (this instanceof Enemy && this.soundCooldown <= 0 || p_219373_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) && this.getTarget() == null) {
+		if (LookUtils.isVibrationAvaiable(this) && this.soundCooldown <= 0 && !this.isNoAi() && !this.isDeadOrDying() && p_219370_.getWorldBorder().isWithinBounds(p_219372_) && !this.isRemoved() && this.level == p_219370_ && (this instanceof Enemy || p_219373_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) && this.getTarget() == null) {
 			Entity entity = p_219374_.sourceEntity();
 
 			if (p_219373_.is(ModTags.GameEvents.IGNORE_VIBRATION)) {
@@ -98,7 +98,9 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 			if (p_223868_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) {
 				PathfinderMob pathfinderMob = (PathfinderMob) ((Object) this);
 				Vec3 vec3 = DefaultRandomPos.getPosAway(pathfinderMob, 16, 7, new Vec3(p_223867_.getX(), p_223867_.getY(), p_223867_.getZ()));
-				this.getNavigation().moveTo(this.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0), 1.2F);
+				if (vec3 != null) {
+					this.getNavigation().moveTo(this.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0), 1.2F);
+				}
 				this.soundCooldown = 60;
 			} else {
 				if (entity != null && !LookUtils.hasLineOfSightOnlyClip(this, entity)) {
