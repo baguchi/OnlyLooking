@@ -101,13 +101,13 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 				this.getNavigation().moveTo(this.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0), 1.2F);
 				this.soundCooldown = 60;
 			} else {
-				if (entity != null) {
+				if (entity != null && !LookUtils.hasLineOfSightOnlyClip(this, entity)) {
 					this.getNavigation().moveTo(entity.getX(), entity.getY(), entity.getZ(), 0.95F);
 				}
-				if (projectile != null) {
+				if (projectile != null && !LookUtils.isLookingAtYou(this, projectile)) {
 					this.getNavigation().moveTo(projectile.getX(), projectile.getY(), projectile.getZ(), 0.95F);
 				}
-				this.soundCooldown = 200;
+				this.soundCooldown = 400;
 			}
 
 		}

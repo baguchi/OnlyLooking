@@ -3,6 +3,8 @@ package baguchan.onlylooking;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -15,6 +17,20 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class LookUtils {
 	public static boolean isLookingAtYou(LivingEntity entity, Entity target) {
 		return !ModConfigs.COMMON.NEW_LOOKING_BLACKLIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString()) && isLookingAtYouTest(entity, target);
+	}
+
+	public static boolean hasLineOfSightOnlyClip(LivingEntity entity, Entity target) {
+		if (target.level != entity.level) {
+			return false;
+		} else {
+			Vec3 vec3 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
+			Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
+			if (vec31.distanceTo(vec3) > 128.0D) {
+				return false;
+			} else {
+				return entity.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.MISS;
+			}
+		}
 	}
 
 	public static boolean isVibrationAvaiable(LivingEntity entity) {
