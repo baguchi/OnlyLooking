@@ -33,7 +33,7 @@ import java.util.function.BiConsumer;
 
 @Mixin(PathfinderMob.class)
 public abstract class PathfinderMobMixin extends Mob implements VibrationListener.VibrationListenerConfig {
-	private DynamicGameEventListener<VibrationListener> dynamicGameEventListener;
+	private DynamicGameEventListener<VibrationNoParticleListener> dynamicGameEventListener;
 	private int soundCooldown;
 
 	public PathfinderMobMixin(EntityType<? extends PathfinderMob> p_19870_, Level p_19871_) {
@@ -49,7 +49,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 	public void addAdditionalSaveData(CompoundTag p_219434_) {
 		super.addAdditionalSaveData(p_219434_);
 		p_219434_.putInt("SoundCooldown", this.soundCooldown);
-		VibrationListener.codec(this).encodeStart(NbtOps.INSTANCE, this.dynamicGameEventListener.getListener()).resultOrPartial(OnlyLooking.LOGGER::error).ifPresent((p_219418_) -> {
+		VibrationNoParticleListener.noPatricleCodec(this).encodeStart(NbtOps.INSTANCE, this.dynamicGameEventListener.getListener()).resultOrPartial(OnlyLooking.LOGGER::error).ifPresent((p_219418_) -> {
 			p_219434_.put("listener", p_219418_);
 		});
 	}
@@ -60,7 +60,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 		this.soundCooldown = p_219415_.getInt("SoundCooldown");
 
 		if (p_219415_.contains("listener", 10)) {
-			VibrationListener.codec(this).parse(new Dynamic<>(NbtOps.INSTANCE, p_219415_.getCompound("listener"))).resultOrPartial(OnlyLooking.LOGGER::error).ifPresent((p_219408_) -> {
+			VibrationNoParticleListener.noPatricleCodec(this).parse(new Dynamic<>(NbtOps.INSTANCE, p_219415_.getCompound("listener"))).resultOrPartial(OnlyLooking.LOGGER::error).ifPresent((p_219408_) -> {
 				this.dynamicGameEventListener.updateListener(p_219408_, this.level);
 			});
 		}

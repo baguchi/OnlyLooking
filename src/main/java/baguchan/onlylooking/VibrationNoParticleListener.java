@@ -1,9 +1,12 @@
 package baguchan.onlylooking;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ClipBlockStateContext;
 import net.minecraft.world.level.Level;
@@ -17,6 +20,24 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class VibrationNoParticleListener extends VibrationListener {
+	public static Codec<VibrationNoParticleListener> noPatricleCodec(VibrationListener.VibrationListenerConfig p_223782_) {
+		return RecordCodecBuilder.create((p_223785_) -> {
+			return p_223785_.group(PositionSource.CODEC.fieldOf("source").forGetter((p_223802_) -> {
+				return p_223802_.listenerSource;
+			}), ExtraCodecs.NON_NEGATIVE_INT.fieldOf("range").forGetter((p_223800_) -> {
+				return p_223800_.listenerRange;
+			}), VibrationListener.ReceivingEvent.CODEC.optionalFieldOf("event").forGetter((p_223798_) -> {
+				return Optional.ofNullable(p_223798_.receivingEvent);
+			}), Codec.floatRange(0.0F, Float.MAX_VALUE).fieldOf("event_distance").orElse(0.0F).forGetter((p_223796_) -> {
+				return p_223796_.receivingDistance;
+			}), ExtraCodecs.NON_NEGATIVE_INT.fieldOf("event_delay").orElse(0).forGetter((p_223794_) -> {
+				return p_223794_.travelTimeInTicks;
+			})).apply(p_223785_, (p_223788_, p_223789_, p_223790_, p_223791_, p_223792_) -> {
+				return new VibrationNoParticleListener(p_223788_, p_223789_, p_223782_, p_223790_.orElse(null), p_223791_, p_223792_);
+			});
+		});
+	}
+
 	public VibrationNoParticleListener(PositionSource p_223760_, int p_223761_, VibrationListener.VibrationListenerConfig p_223762_, @Nullable VibrationListener.ReceivingEvent p_223763_, float p_223764_, int p_223765_) {
 		super(p_223760_, p_223761_, p_223762_, p_223763_, p_223764_, p_223765_);
 	}
