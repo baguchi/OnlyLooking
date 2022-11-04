@@ -90,14 +90,17 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 				PathfinderMob pathfinderMob = (PathfinderMob) ((Object) this);
 				Vec3 vec3 = DefaultRandomPos.getPosAway(pathfinderMob, 16, 7, new Vec3(p_223867_.getX(), p_223867_.getY(), p_223867_.getZ()));
 				this.getNavigation().moveTo(this.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0), 1.2F);
+				this.soundCooldown = 60;
+			} else {
+				if (entity != null && !this.hasLineOfSight(entity)) {
+					this.getNavigation().moveTo(entity.getX(), entity.getY(), entity.getZ(), 0.95F);
+				}
+				if (projectile != null && !this.hasLineOfSight(projectile)) {
+					this.getNavigation().moveTo(projectile.getX(), projectile.getY(), projectile.getZ(), 0.95F);
+				}
+				this.soundCooldown = 300;
 			}
-			if (entity != null && !this.hasLineOfSight(entity)) {
-				this.getNavigation().moveTo(entity.getX(), entity.getY(), entity.getZ(), 0.95F);
-			}
-			if (projectile != null && !this.hasLineOfSight(projectile)) {
-				this.getNavigation().moveTo(projectile.getX(), projectile.getY(), projectile.getZ(), 0.95F);
-			}
-			this.soundCooldown = 300;
+
 		}
 	}
 
