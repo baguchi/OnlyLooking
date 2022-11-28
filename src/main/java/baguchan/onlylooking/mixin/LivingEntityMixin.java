@@ -20,7 +20,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(at = @At("HEAD"), method = "hasLineOfSight", cancellable = true)
 	void hasLineOfSight(Entity p_32535_, CallbackInfoReturnable<Boolean> callbackInfo) {
 		LivingEntity livingEntity = (LivingEntity) ((Object) this);
-		if (p_32535_.level == this.level && !LookUtils.isLookingAtYou(livingEntity, (LivingEntity) p_32535_)) {
+		if (p_32535_.level == this.level && !LookUtils.isLookingAtYou(livingEntity, p_32535_)) {
 			callbackInfo.setReturnValue(false);
 		}
 	}
