@@ -16,7 +16,11 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public class LookUtils {
 	public static boolean isLookingAtYou(LivingEntity entity, Entity target) {
-		return !ModConfigs.COMMON.NEW_LOOKING_BLACKLIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString()) && isLookingAtYouTest(entity, target);
+		if (!ModConfigs.COMMON.NEW_LOOKING_BLACKLIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString())) {
+			return isLookingAtYouTest(entity, target);
+		} else {
+			return true;
+		}
 	}
 
 	public static boolean hasLineOfSightOnlyClip(LivingEntity entity, Entity target) {
@@ -67,7 +71,7 @@ public class LookUtils {
 
 		double f2 = vec3.distanceTo(target.getEyePosition()) / distanceThreshold;
 
-		double sensitive = 6;
+		double sensitive = 10;
 		return f2 > sensitive;
 	}
 }

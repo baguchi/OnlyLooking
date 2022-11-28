@@ -42,7 +42,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void onConstructor(EntityType<? extends PathfinderMob> p_19870_, Level p_19871_, CallbackInfo info) {
-		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationNoParticleListener(new EntityPositionSource(this, this.getEyeHeight()), 16, this, null, 0.0F, 0));
+		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationNoParticleListener(new EntityPositionSource(this, this.getEyeHeight()), 10, this, null, 0.0F, 0));
 	}
 
 
