@@ -1,14 +1,13 @@
 {
   "values": [
+    "minecraft:block_open",
+    "minecraft:block_place",
+    "minecraft:block_destroy",
     "minecraft:drink",
     "minecraft:eat",
-    "minecraft:entity_damage",
-    "minecraft:entity_die",
-    "minecraft:entity_interact",
     "minecraft:entity_place",
     "minecraft:entity_roar",
     "minecraft:entity_shake",
-    "minecraft:equip",
     "minecraft:explode",
     "minecraft:hit_ground",
     "minecraft:instrument_play",
@@ -17,6 +16,8 @@
     "minecraft:step",
     "minecraft:swim",
     "minecraft:teleport",
-    "minecraft:flap"
+    "minecraft:flap",
+    "minecraft:shriek",
+    "#minecraft:shrieker_can_listen"
   ]
 }

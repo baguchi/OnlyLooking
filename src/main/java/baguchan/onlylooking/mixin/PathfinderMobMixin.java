@@ -1,6 +1,7 @@
 package baguchan.onlylooking.mixin;
 
 import baguchan.onlylooking.LookUtils;
+import baguchan.onlylooking.ModConfigs;
 import baguchan.onlylooking.ModTags;
 import baguchan.onlylooking.OnlyLooking;
 import baguchan.onlylooking.VibrationNoParticleListener;
@@ -42,7 +43,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void onConstructor(EntityType<? extends PathfinderMob> p_19870_, Level p_19871_, CallbackInfo info) {
-		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationNoParticleListener(new EntityPositionSource(this, this.getEyeHeight()), 10, this, null, 0.0F, 0));
+		this.dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationNoParticleListener(new EntityPositionSource(this, this.getEyeHeight()), ModConfigs.COMMON.VIBRATION_RANGE.get(), this, null, 0.0F, 0));
 	}
 
 
@@ -81,7 +82,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 
 			if (entity instanceof LivingEntity) {
 				LivingEntity livingentity = (LivingEntity) entity;
-				if (!this.canAttack(livingentity)) {
+				if (!this.canAttack(livingentity) || livingentity instanceof Enemy) {
 					return false;
 				}
 			}
@@ -95,7 +96,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 	@Override
 	public void onSignalReceive(ServerLevel p_223865_, GameEventListener p_223866_, BlockPos p_223867_, GameEvent p_223868_, @Nullable Entity entity, @Nullable Entity entity2, float p_223871_) {
 		if (!this.isDeadOrDying()) {
-			if (p_223868_ == GameEvent.PRIME_FUSE && LookUtils.isPrimeDislike(this)) {
+			if ((p_223868_ == GameEvent.PRIME_FUSE) && LookUtils.isPrimeDislike(this)) {
 				PathfinderMob pathfinderMob = (PathfinderMob) ((Object) this);
 
 				for (int i = 0; i < 4; i++) {
@@ -114,7 +115,7 @@ public abstract class PathfinderMobMixin extends Mob implements VibrationListene
 					this.getNavigation().moveTo(p_223867_.getX(), p_223867_.getY(), p_223867_.getZ(), 0.95F);
 				}
 
-				this.soundCooldown = 120;
+				this.soundCooldown = 60;
 			}
 
 		}

@@ -21,6 +21,7 @@ public class ModConfigs {
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> DISABLE_VIBRATION_LIST;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> PRIME_DISLIKE_LIST;
 		public final ForgeConfigSpec.BooleanValue VIBRATION_CHECK;
+		public final ForgeConfigSpec.IntValue VIBRATION_RANGE;
 
 
 		public Common(ForgeConfigSpec.Builder builder) {
@@ -39,6 +40,9 @@ public class ModConfigs {
 			VIBRATION_CHECK = builder
 					.comment("Enable Mob check Vibration(when they find sounds. find sound source.)")
 					.define("Vibration", true);
+			VIBRATION_RANGE = builder
+					.comment("Change Mob check Vibration Range.(It mean you can more encounter enemy)")
+					.defineInRange("Vibration Range", 16, 6, 24);
 		}
 	}
 }
