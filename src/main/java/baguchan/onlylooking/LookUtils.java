@@ -1,8 +1,10 @@
 package baguchan.onlylooking;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 /*
@@ -11,11 +13,15 @@ import net.minecraft.world.phys.Vec3;
  * https://www.curseforge.com/project/309344/license
  */
 public class LookUtils {
-	public static boolean isLookingAtYou(LivingEntity entity, LivingEntity target) {
-		return isLookingAtYouTest(entity, target);
+	public static boolean isLookingAtYou(LivingEntity entity, Entity target) {
+		if (!ModConfigs.COMMON.NEW_LOOKING_BLACKLIST.get().contains(ForgeRegistries.ENTITIES.getKey(entity.getType()).toString())) {
+			return isLookingAtYouTest(entity, target);
+		} else {
+			return true;
+		}
 	}
 
-	public static boolean isLookingAtYouTest(LivingEntity entity, LivingEntity target) {
+	public static boolean isLookingAtYouTest(LivingEntity entity, Entity target) {
 		float nearDistance = 3;
 		float farDistance = entity.getAttribute(Attributes.FOLLOW_RANGE) != null ? (float) entity.getAttributeBaseValue(Attributes.FOLLOW_RANGE) : 16;
 
