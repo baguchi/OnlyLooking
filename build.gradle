@@ -20,7 +20,7 @@ mixin {
     add sourceSets.main, "onlylooking.refmap.json"
 }
 
-version = '1.18.2-1.3.0'
+version = '1.18.2-1.4.0'
 group = 'baguchan.onlylooking' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'OnlyLooking'
 
