@@ -27,7 +27,7 @@ public class ModConfigs {
 		public Common(ForgeConfigSpec.Builder builder) {
 			NEW_LOOKING_BLACKLIST = builder
 					.comment("Add Entity on Looking AI Blacklist. Use the full name(This config only disabled mob enchant when mob spawn. not mean delete complete, eg: minecraft:zomibe.")
-					.define("LookingAIMobBlacklist", Lists.newArrayList("minecraft:phantom"));
+					.define("LookingAIMobBlacklist", Lists.newArrayList("minecraft:phantom", "minecraft:player", "minecraft:ender_dragon"));
 			DISABLE_VIBRATION_LIST = builder
 					.comment("Add Entity on Mob check Vibration BlackList")
 					.define("VibrationBlackList", Lists.newArrayList("minecraft:phantom", "minecraft:warden"));
