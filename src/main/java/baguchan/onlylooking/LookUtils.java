@@ -1,12 +1,12 @@
 package baguchan.onlylooking;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 
 /*
@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public class LookUtils {
 	public static boolean isLookingAtYou(LivingEntity entity, Entity target) {
-		if (!ModConfigs.COMMON.NEW_LOOKING_BLACKLIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString())) {
+		if (!ModConfigs.COMMON.NEW_LOOKING_BLACKLIST.get().contains(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString())) {
 			return isLookingAtYouTest(entity, target);
 		} else {
 			return true;
@@ -24,7 +24,7 @@ public class LookUtils {
 	}
 
 	public static boolean hasLineOfSightOnlyClip(LivingEntity entity, Entity target) {
-		if (target.level != entity.level) {
+		if (target.level() != entity.level()) {
 			return false;
 		} else {
 			Vec3 vec3 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
@@ -32,17 +32,13 @@ public class LookUtils {
 			if (vec31.distanceTo(vec3) > 128.0D) {
 				return false;
 			} else {
-				return entity.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.MISS;
+				return entity.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.MISS;
 			}
 		}
 	}
 
 	public static boolean isVibrationAvaiable(LivingEntity entity) {
-		return !ModConfigs.COMMON.DISABLE_VIBRATION_LIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString()) && ModConfigs.COMMON.VIBRATION_CHECK.get();
-	}
-
-	public static boolean isPrimeDislike(LivingEntity entity) {
-		return ModConfigs.COMMON.PRIME_DISLIKE_LIST.get().contains(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString());
+		return !ModConfigs.COMMON.DISABLE_VIBRATION_LIST.get().contains(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString()) && ModConfigs.COMMON.VIBRATION_CHECK.get();
 	}
 
 	public static boolean isLookingAtYouTest(LivingEntity entity, Entity target) {
@@ -71,7 +67,7 @@ public class LookUtils {
 
 		double f2 = vec3.distanceTo(target.getEyePosition()) / distanceThreshold;
 
-		double sensitive = 10;
+		double sensitive = 12;
 		return f2 > sensitive;
 	}
 }

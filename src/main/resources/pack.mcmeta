@@ -1,6 +1,10 @@
 {
     "pack": {
-        "description": "onlylooking resources",
-        "pack_format": 10
-    }
+      "description": {
+        "text": "${mod_id} resources"
+      },
+      "pack_format": ${
+  pack_format_number
+}
+}
 }
